@@ -299,6 +299,13 @@ Full deliberation: **[`docs/LLM_COUNCIL_REVIEW.md`](docs/LLM_COUNCIL_REVIEW.md)*
 5. [ ] Rider Score UI — only after log-derived thresholds
 6. [ ] iOS Phase 0 desk tests — only after entitlement + doc gates; no SwiftUI yet
 
+## Six Hats brainstorm (2026-09-06)
+
+Skill: **`.cursor/skills/brainstorm-six-hats`** (de Bono Six Thinking Hats; people often say “seven hats”).  
+Session output: **[`docs/brainstorms/2026-09-06-northstar-ios-rider-score-six-hats.md`](docs/brainstorms/2026-09-06-northstar-ios-rider-score-six-hats.md)**.
+
+**Blue close (aligned with council):** Android instrumented ride first; iOS = entitlement + desk spike only; rider feature = post-ride smoothness coaching (not “safety”); gear deferred; no badges until thresholds exist.
+
 ## Community features (END GOAL — long horizon, after the app is solid)
 
 The eventual vision once the core is stable: **community / social riding.** Not now — this is
