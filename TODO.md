@@ -268,6 +268,26 @@ Full write-up: **[`docs/IOS_PORT_RESEARCH.md`](docs/IOS_PORT_RESEARCH.md)** (cro
 **Decision rule:** if Phase 0 fails on Wi-Fi or background encode → keep Android-only. Do not invest in a full iOS UI before that.
 CLAUDE.md remains Android-primary until the spike lands.
 
+## Rider Score — research done (2026-09-06), build later
+
+Tesla-style “how well am I riding?” for the Himalayan. Full write-up:
+**[`docs/RIDER_SCORE_RESEARCH.md`](docs/RIDER_SCORE_RESEARCH.md)**.
+
+**Two problems:** (1) scoring model, (2) getting signals on RE.
+
+| Insight | Detail |
+|---|---|
+| Tesla method | Harsh-event **rates** (e.g. brake >0.3g, turn >0.4g) → risk formula → **0–100** + factor breakdown |
+| Our v1 | Phone GPS + IMU → smooth accel/brake, corner composure, speed consistency → post-ride score + levels |
+| Digital gear | Cluster already shows gear / upshift advice — **great for a Gear Fitness factor**, but K1G projection has **not** forwarded instruments in our fw 11.63 captures |
+| Don’t block on gear | Ship phone-first score; keep `0x0C`/`0x0F` logging; add gear coaching if telemetry ever appears |
+
+**When prioritized:**
+1. [ ] IMU spike on a real ride (tank-bag noise vs real brake/turn thresholds)
+2. [ ] `RideDynamicsEngine` + score on `Ride` + post-ride breakdown UI
+3. [ ] Optional OSM speed-limit factor
+4. [ ] Gear Fitness factor only if dash telemetry or another source provides gear/RPM
+
 ## Community features (END GOAL — long horizon, after the app is solid)
 
 The eventual vision once the core is stable: **community / social riding.** Not now — this is
