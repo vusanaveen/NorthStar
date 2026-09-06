@@ -77,7 +77,9 @@ link is isolated:
 
 ## Hard constraints / non-goals
 
-- **Android only.** No iOS.
+- **Android is the shipping platform.** iOS is research-only until a on-bike
+  feasibility spike passes — see `@docs/IOS_PORT_RESEARCH.md`. Do not build a
+  full iOS UI in this tree until that gate is green.
 - **One bike** (Himalayan 450), **one dash target** (Tripper). No generic
   multi-bike / multi-dash abstraction.
 - No personas, no branding-as-product, no team/lab infrastructure. Keep it lean.
@@ -86,5 +88,6 @@ link is isolated:
 
 ## Reference docs in this repo
 
-- `@docs/HLD-LLD.md` — full architecture (high- and low-level design).
-- `@docs/design/` — UI prototype and screen specs (from Claude Design).
+- `@docs/IOS_PORT_RESEARCH.md` — iOS port research, risks, and spike plan.
+- `@docs/HLD-LLD.md` — full architecture (high- and low-level design) if present.
+- `@docs/design/` — UI prototype and screen specs (from Claude Design) if present.

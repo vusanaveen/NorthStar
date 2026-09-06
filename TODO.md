@@ -245,27 +245,28 @@ The first public APK got Reddit traction; updates must reach people, not get los
 - [ ] **CI release build (later).** GitHub Actions to build + attach the APK on tag push.
   Needs the signing key as a base64 secret — weigh against keeping the key fully offline.
 
-## iOS (much later — only after Android stabilises)
+## iOS — research done, spike gated (2026-09-06)
 
-Out of scope for now (CLAUDE.md is Android-only), but noted as a real future direction:
+Full write-up: **[`docs/IOS_PORT_RESEARCH.md`](docs/IOS_PORT_RESEARCH.md)** (cross-checked against this repo’s dash code).
 
-- The **hard part is portable**: the dash is just a WiFi peer speaking the K1G control plane
-  + an H.264/RTP stream. Nothing about it is Android-specific. The independent
-  protocol (auth handshake, RTP packetizer, nav TLVs, joystick codes) is the durable asset
-  and would carry over.
-- The **blockers are platform**, and iOS is stricter:
-  - **WiFi auto-join** to the dash SSID: iOS has no real `WifiNetworkSpecifier` equivalent for
-    silently joining an arbitrary AP from a 3rd-party app — likely needs `NEHotspotConfiguration`
-    (user-prompted) and the network has no internet, which iOS dislikes (captive-portal nags).
-  - **Screen-off streaming** — the whole point. iOS background execution is far more
-    restrictive; sustaining an off-screen `VideoToolbox` encode + UDP socket in the background
-    needs careful entitlement work (audio/location background modes as cover) and may fight the OS.
-  - **VideoToolbox** replaces MediaCodec for HW H.264 (fine, equivalent capability).
-- **Approach when the time comes:** factor the protocol/encode/nav core into a shared,
-  platform-agnostic layer (candidate: Kotlin Multiplatform, or a plain spec + a Swift port),
-  keep UI native per platform. Validate WiFi-join + background-encode feasibility on iOS
-  **first** — if either is a hard wall, iOS may be infeasible regardless of effort.
-- **Decision: revisit only after the Android app is stable and the protocol is fully nailed.**
+**Verdict:** protocol/video math is portable; product feasibility hinges on two Apple platform risks.
+
+| Piece | Portable? | Notes |
+|---|---|---|
+| K1G + RSA/AES auth + RTP/NAL | ✅ Yes | Port Swift 1:1 from `dash/protocol`, `DashAuth`, `NalProcessor`, `RtpPacketizer` |
+| H.264 encode 526×300 @ 2–4 fps | ✅ Yes | `VideoToolbox` ≈ MediaCodec for this envelope |
+| Dash map while screen off | ⚠️ CPU only | Do **not** use MapLibre Metal in background (GPU denied). CoreGraphics → CVPixelBuffer |
+| Wi-Fi join to `RE_*` | ⚠️ UX hit | `NEHotspotConfiguration` = exact SSID + system prompt; no silent prefix join |
+| Screen-off multi-hour stream | ❌ Unknown | **Must spike on a bike before any full SwiftUI port** |
+
+**Plan (do in order):**
+1. [ ] **Phase 0 spike** — join + auth + static H.264/RTP with phone locked 20–30 min (pass/fail gate)
+2. [ ] Phase 1 — dash nav MVP (CPU map, OSRM, joystick, voice) only if spike passes
+3. [ ] Phase 2 — Garage / fuel / rides / optional Firebase parity
+4. [ ] Phase 3 — TestFlight hardening
+
+**Decision rule:** if Phase 0 fails on Wi-Fi or background encode → keep Android-only. Do not invest in a full iOS UI before that.
+CLAUDE.md remains Android-primary until the spike lands.
 
 ## Community features (END GOAL — long horizon, after the app is solid)
 
