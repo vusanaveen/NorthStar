@@ -245,11 +245,11 @@ The first public APK got Reddit traction; updates must reach people, not get los
 - [ ] **CI release build (later).** GitHub Actions to build + attach the APK on tag push.
   Needs the signing key as a base64 secret — weigh against keeping the key fully offline.
 
-## iOS — research done, spike gated (2026-09-06)
+## iOS — research done, spike gated (2026-09-06), council-amended
 
-Full write-up: **[`docs/IOS_PORT_RESEARCH.md`](docs/IOS_PORT_RESEARCH.md)** (cross-checked against this repo’s dash code).
+Full write-up: **[`docs/IOS_PORT_RESEARCH.md`](docs/IOS_PORT_RESEARCH.md)** · Council: **[`docs/LLM_COUNCIL_REVIEW.md`](docs/LLM_COUNCIL_REVIEW.md)**.
 
-**Verdict:** protocol/video math is portable; product feasibility hinges on two Apple platform risks.
+**Verdict:** protocol/video math is portable; product feasibility hinges on Apple platform risks (**multicast entitlement**, Local Network, screen-off, interface pinning). **Conditional Phase 0 only** — no SwiftUI until desk gates pass.
 
 | Piece | Portable? | Notes |
 |---|---|---|
@@ -268,25 +268,36 @@ Full write-up: **[`docs/IOS_PORT_RESEARCH.md`](docs/IOS_PORT_RESEARCH.md)** (cro
 **Decision rule:** if Phase 0 fails on Wi-Fi or background encode → keep Android-only. Do not invest in a full iOS UI before that.
 CLAUDE.md remains Android-primary until the spike lands.
 
-## Rider Score — research done (2026-09-06), build later
+## Rider Score — research done (2026-09-06), council-amended
 
-Tesla-style “how well am I riding?” for the Himalayan. Full write-up:
-**[`docs/RIDER_SCORE_RESEARCH.md`](docs/RIDER_SCORE_RESEARCH.md)**.
+Write-up: **[`docs/RIDER_SCORE_RESEARCH.md`](docs/RIDER_SCORE_RESEARCH.md)** · Council: **[`docs/LLM_COUNCIL_REVIEW.md`](docs/LLM_COUNCIL_REVIEW.md)**
 
-**Two problems:** (1) scoring model, (2) getting signals on RE.
+**Council ruling:** **GO on gyro+IMU logging** · **NO-GO on score UI/levels** until thresholds come from your rides. Rename as coaching/smoothness (not “safety”). Do not penalize hard-brake magnitude on a bike. Cornering via `v·ω_yaw`, not car lateral-g.
 
 | Insight | Detail |
 |---|---|
-| Tesla method | Harsh-event **rates** (e.g. brake >0.3g, turn >0.4g) → risk formula → **0–100** + factor breakdown |
-| Our v1 | Phone GPS + IMU → smooth accel/brake, corner composure, speed consistency → post-ride score + levels |
-| Digital gear | Cluster already shows gear / upshift advice — **great for a Gear Fitness factor**, but K1G projection has **not** forwarded instruments in our fw 11.63 captures |
-| Don’t block on gear | Ship phone-first score; keep `0x0C`/`0x0F` logging; add gear coaching if telemetry ever appears |
+| Tesla method (historical v1 shape) | Harsh-event **rates** → risk formula → **0–100** + factor breakdown — borrow shape only |
+| Our logging v0 | Phone GPS + accel **+ gyro**, tank-bag, screen-off — prove signal > vibration |
+| Digital gear | Helpful later; **not** on K1G projection in fw 11.63 captures — don’t block |
+| Don’t ship badges yet | No Bronze/Platinum UI until physics + thresholds are real |
 
 **When prioritized:**
-1. [ ] IMU spike on a real ride (tank-bag noise vs real brake/turn thresholds)
-2. [ ] `RideDynamicsEngine` + score on `Ride` + post-ride breakdown UI
-3. [ ] Optional OSM speed-limit factor
-4. [ ] Gear Fitness factor only if dash telemetry or another source provides gear/RPM
+1. [ ] Instrumented ride: 50 Hz accel+gyro+GPS logs (no scoring UI)
+2. [ ] Derive thresholds from those traces; fail closed if tank-bag noise dominates
+3. [ ] Post-ride coaching card only after (2)
+4. [ ] Gear Fitness only if `0x0C`/`0x0F` or another source provides gear/RPM
+
+## LLM Council (2026-09-06)
+
+Full deliberation: **[`docs/LLM_COUNCIL_REVIEW.md`](docs/LLM_COUNCIL_REVIEW.md)**.
+
+**This month (council order):**
+1. [ ] Instrumented Android screen-off ride (gyro+accel+GPS)
+2. [ ] Android reliability hardening (reconnect / dash Wi-Fi settings / open P0s)
+3. [ ] File Apple **Multicast Networking** entitlement request (iOS clock start)
+4. [ ] Move dash basemap + router off unofficial Google tiles / OSRM-demo
+5. [ ] Rider Score UI — only after log-derived thresholds
+6. [ ] iOS Phase 0 desk tests — only after entitlement + doc gates; no SwiftUI yet
 
 ## Community features (END GOAL — long horizon, after the app is solid)
 

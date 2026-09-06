@@ -1,11 +1,23 @@
 # Northstar — iOS Port Research
 
-**Status:** research complete (2026-09-06) · **Go/no-go still pending hardware spike**  
+**Status:** research complete (2026-09-06) · **council-amended** · **Conditional Phase 0 only**  
 **Repo cross-checked:** `https://github.com/vusanaveen/NorthStar.git` (public fork @ `4d872c91`)  
-**Goal:** same product as Android — phone-screen-**OFF** Tripper navigation over the bike Wi-Fi.
+**Goal:** same product as Android — phone-screen-**OFF** Tripper navigation over the bike Wi-Fi.  
+**Council review:** [`LLM_COUNCIL_REVIEW.md`](LLM_COUNCIL_REVIEW.md) (2026-09-06) — accept direction; do not build from the first draft as written.
 
 > Independent / unofficial interoperability with hardware the rider already owns.
 > Validated Android reference target: Tripper firmware **11.63**.
+
+### Council amendments (must-read before Phase 0)
+
+1. **Multicast Networking entitlement** (`com.apple.developer.networking.multicast`) is a **day-zero gate** if control TX stays UDP **broadcast** to `192.168.1.255:2000`. File the Apple request immediately; latency is unbounded and refusal is possible. First desk-test whether the dash accepts **unicast** to `192.168.1.1:2000` — that may avoid the entitlement.
+2. **`NSLocalNetworkUsageDescription`** (+ Local Network prompt) is required for local UDP RX on `:2002`.
+3. Prefer a **persisted** `NEHotspotConfiguration` (`joinOnce = false`) plus explicit “Forget dash”. `joinOnce = true` drops the network when the app leaves foreground / sleeps and will fail a screen-off ride.
+4. **Interface pinning is mandatory**, not optional: pin dash UDP to Wi-Fi via `NWParameters.requiredInterfaceType = .wifi` (or `IP_BOUND_IF`) so tiles/routing keep using cellular — same class of bug Android already fixed with `Network.bindSocket`.
+5. **VideoToolbox ≠ MediaCodec framing.** Expect AVCC length-prefixed NALs + out-of-band SPS/PPS; convert to the dash’s Annex-B/RTP expectations. Width **526 is not 16-aligned** — spike must dump SPS and confirm the dash does not reject padded 528 / crop flags.
+6. **Renderer strategy must match Android’s roadmap.** This doc’s “CPU forever” conflicts with `TODO.md` interest in offscreen MapLibre for the dash basemap. Pick one cross-platform approach before writing SwiftUI.
+7. **Distribution blockers travel with the port:** unofficial Google raster tiles + public OSRM demo are App Review / ToS risks. Move basemap/router before any store/TestFlight push.
+8. Effort tables below are **speculative** — treat as order-of-magnitude only.
 
 ---
 
@@ -14,11 +26,11 @@
 | Question | Answer |
 |---|---|
 | Can we reuse the dash protocol? | **Yes.** K1G + RSA/AES auth + H.264/RTP is platform-agnostic. |
-| Is VideoToolbox a MediaCodec equivalent? | **Yes** for 526×300 Baseline @ 2–4 fps / 100–200 kbps. |
+| Is VideoToolbox a MediaCodec equivalent? | **Mostly**, for 526×300 Baseline @ 2–4 fps / 100–200 kbps — but bitstream framing/SPS shape must be spike-validated (not a line-for-line port). |
 | Will silent Wi-Fi join work like Android? | **No.** Needs `NEHotspotConfiguration` (user prompt). Prefix `RE_*` discovery is weaker. |
 | Will screen-off streaming work? | **Unknown — #1 risk.** Must spike before a full Swift UI port. |
-| Can we use MapLibre Metal for the *dash* frames in background? | **No (likely).** iOS blocks background GPU. Dash path must stay **CPU-rendered** (CoreGraphics → CVPixelBuffer), matching Android’s Canvas path — not the in-app MapLibre view. |
-| Recommended next step | **Feasibility spike only** (Wi-Fi join + background encode + UDP), on a real iPhone + bike. Do **not** start a full app port until that spike passes. |
+| Can we use MapLibre Metal for the *dash* frames in background? | **No (likely).** iOS blocks background GPU. Until a shared renderer decision exists, assume **CPU-rendered** dash frames (CoreGraphics → CVPixelBuffer). |
+| Recommended next step | File multicast entitlement + desk Phase 0 (unicast?, VT encode, interface pin). **No SwiftUI** until that passes. Android on-bike hardening still outranks iOS product work. |
 
 ---
 

@@ -1,45 +1,58 @@
 # Rider Score Research — “How well am I riding?” for Northstar / Himalayan 450
 
-**Status:** research (2026-09-06) · not scheduled for build yet  
-**Prompt:** Tesla-style driving score / levels, and whether RE’s **digital gear** display helps us do the same.
+**Status:** research (2026-09-06) · **council-amended** · logging GO / scoring UI NO-GO until thresholds exist  
+**Prompt:** Tesla-style driving score / levels, and whether RE’s **digital gear** display helps us do the same.  
+**Council review:** [`LLM_COUNCIL_REVIEW.md`](LLM_COUNCIL_REVIEW.md) — ship gyro+IMU logging first; do not ship levels/badges yet.
+
+**Product naming:** prefer **Ride Smoothness / Coaching Score** (N=1, post-ride). Explicitly **not** a safety rating, insurance score, or Tesla-branded feature.
 
 This is **two engineering problems**:
 
-1. **Scoring model** — what “good riding” means mathematically (Tesla already solved a car version of this).
+1. **Scoring model** — what “good riding” means mathematically (Tesla solved a *car* version; bike physics differ).
 2. **Signal acquisition on RE** — what sensors/fields we can actually read from phone + Tripper + (maybe) gear.
+
+### Council amendments (must-read before building)
+
+1. **Cornering model:** on a coordinated lean, bike-frame lateral accel ≈ 0 and low-passed “gravity” is contaminated by centripetal accel. Prefer **gyro + speed**: `a_lat ≈ v · ω_yaw`, lean `φ ≈ atan(v·ω / g)`, score **roll-rate / jerk**, not car-style |lat g|. Add `TYPE_GYROSCOPE`. `v·ω` is unreliable at walking speeds.
+2. **Do not penalize hard-braking magnitude** on a motorcycle (perverse incentive). If braking is scored at all, score **modulation** (jerk, repeated stabs) **post-ride only**.
+3. Tesla formula `≈ 115.38 − 22.53 × PCF` and 0.3 g / 0.4 g thresholds are **Safety Score v1.0 (historical)**. Do not label them “current v3.x”.
+4. Tank-bag soft mounts + single-cylinder vibration will false-trigger jerk metrics — **fail closed** until an instrumented ride proves signal > noise.
+5. Keep raw-ish traces (~10 Hz+) through calibration; event lists alone cannot rescore after threshold retunes.
 
 ---
 
 ## 1. How Tesla does it (the reference design)
 
-Tesla’s **Safety Score** (now v3.x) is **not** a vibe meter. It is a **risk model**:
+Tesla’s **Safety Score** is **not** a vibe meter. It is a **risk model** (insurance-oriented on cars):
 
 1. Measure a few **behavior rates** from vehicle sensors while driving manually.
 2. Plug them into a **Predicted Collision Frequency (PCF)** formula (fleet-trained).
-3. Map PCF → a **0–100 score** shown in the app (historically ≈ `115.38 − 22.53 × PCF`).
+3. Map PCF → a **0–100 score** shown in the app.
 4. Optionally blend with “perfect” assisted miles (FSD) — irrelevant for us.
 
-### Classic factors & thresholds (public Tesla definitions)
+### Classic factors & thresholds (public Tesla definitions — **v1.0 historical**)
 
-| Factor | What they measure | Typical threshold |
+| Factor | What they measure | Typical threshold (v1-era public writeups) |
 |---|---|---|
 | **Hard braking** | Longitudinal deceleration | **> 0.3 g** (~6.7 mph drop in 1 s) |
 | **Aggressive turning** | Lateral acceleration | **> 0.4 g** (~8.9 mph sideways in 1 s) |
 | **Unsafe following** | Time gap to lead car | **< ~1.0 s** headway (mostly at higher speeds) |
-| **Excessive speeding** | Absolute / relative speed | e.g. **> 85 mph**, or **>20% faster** than car ahead |
+| **Excessive speeding** | Absolute / relative speed | e.g. high absolute mph thresholds in later revisions — **not** a generic “20% faster than lead car” factor |
 | Forward collision warnings / seatbelt / late-night / forced AP disengage | Car-stack specific | Skip or remap for motorcycle |
+
+Early public mapping used approximately `115.38 − 22.53 × PCF` (**v1.0**). Later Safety Score revisions changed factors/weights — treat numbers above as **illustrative history**, not something to reimplement.
 
 Hard braking / aggressive turning are stored as **ratios** (time above harsh threshold ÷ time above a mild threshold), not raw event counts — that normalizes for stop‑and‑go city traffic.
 
-**Product UX Tesla teaches us (steal this shape, not the insurance bit):**
+**Product UX to steal (shape only — not insurance / safety claims):**
 
 - One headline **0–100** (or letter grade / level).
-- Per-factor breakdown (“braking · cornering · speed · smoothness”).
+- Per-factor breakdown (“braking smoothness · corner composure · speed consistency”).
 - Trend across trips (“this week vs last”).
 - Coaching copy tied to the worst factor — not a wall of charts mid-ride.
 
-We do **not** need Tesla’s insurance PCF constants. We need the **same architecture**:  
-`sensors → event rates → weighted score → levels + coaching`.
+We do **not** copy Tesla’s PCF constants or branding. We borrow the **architecture**:  
+`sensors → event rates → weighted coaching score → levels + tips`.
 
 ---
 
