@@ -1,0 +1,164 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "DashCore-x86_64-unknown-linux-gnu-debug.module": ["<DashCore-x86_64-unknown-linux-gnu-debug.module>"]
+  "DashCorePackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module": ["<DashCorePackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module>"]
+  "DashCorePackageTests-x86_64-unknown-linux-gnu-debug.module": ["<DashCorePackageTests-x86_64-unknown-linux-gnu-debug.module>"]
+  "DashCorePackageTests-x86_64-unknown-linux-gnu-debug.test": ["<DashCorePackageTests-x86_64-unknown-linux-gnu-debug.test>"]
+  "DashCoreTests-x86_64-unknown-linux-gnu-debug.module": ["<DashCoreTests-x86_64-unknown-linux-gnu-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<DashCore-x86_64-unknown-linux-gnu-debug.module>"]
+  "test": ["<DashCore-x86_64-unknown-linux-gnu-debug.module>","<DashCorePackageTests-x86_64-unknown-linux-gnu-debug.test>","<DashCoreTests-x86_64-unknown-linux-gnu-debug.module>"]
+default: "main"
+nodes:
+  "/workspace/ios/DashCore/Sources/DashCore/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/workspace/ios/DashCore/Tests/DashCoreTests/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashCore.swiftmodule.o":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCore.swiftmodule"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashCore.swiftmodule.o"]
+    description: "Wrapping AST for DashCore for debugging"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-modulewrap","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCore.swiftmodule","-o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashCore.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/workspace/ios/DashCore/Sources/DashCore/DashConstants.swift","/workspace/ios/DashCore/Sources/DashCore/GeoPoint.swift","/workspace/ios/DashCore/Sources/DashCore/K1GPacket.swift","/workspace/ios/DashCore/Sources/DashCore/NalUtils.swift","/workspace/ios/DashCore/Sources/DashCore/RtpPacketizer.swift"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/sources"]
+    description: "Write auxiliary file /workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/sources"
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCorePackageDiscoveredTests.swiftmodule.o":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageDiscoveredTests.swiftmodule"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCorePackageDiscoveredTests.swiftmodule.o"]
+    description: "Wrapping AST for DashCorePackageDiscoveredTests for debugging"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-modulewrap","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageDiscoveredTests.swiftmodule","-o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCorePackageDiscoveredTests.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.derived/DashCoreTests.swift","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.derived/all-discovered-tests.swift"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/sources"]
+    description: "Write auxiliary file /workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/sources"
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.derived/all-discovered-tests.swift":
+    tool: test-discovery-tool
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/GeoPointTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/K1GPacketTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/NalRtpTests.swift.o"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.derived/DashCoreTests.swift","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.derived/all-discovered-tests.swift"]
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/DashCorePackageTests.swiftmodule.o":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageTests.swiftmodule"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/DashCorePackageTests.swiftmodule.o"]
+    description: "Wrapping AST for DashCorePackageTests for debugging"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-modulewrap","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageTests.swiftmodule","-o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/DashCorePackageTests.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.derived/runner.swift"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/sources"]
+    description: "Write auxiliary file /workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/sources"
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.derived/runner.swift":
+    tool: test-entry-point-tool
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageDiscoveredTests.swiftmodule"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.derived/runner.swift"]
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashConstants.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashCore.swiftmodule.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/GeoPoint.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/K1GPacket.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/NalUtils.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/RtpPacketizer.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCorePackageDiscoveredTests.swiftmodule.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCoreTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/all-discovered-tests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/DashCorePackageTests.swiftmodule.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/runner.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/DashCoreTests.swiftmodule.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/GeoPointTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/K1GPacketTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/NalRtpTests.swift.o"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.product/Objects.LinkFileList"
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/DashCoreTests.swiftmodule.o":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCoreTests.swiftmodule"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/DashCoreTests.swiftmodule.o"]
+    description: "Wrapping AST for DashCoreTests for debugging"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-modulewrap","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCoreTests.swiftmodule","-o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/DashCoreTests.swiftmodule.o","-target","x86_64-unknown-linux-gnu"]
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/workspace/ios/DashCore/Tests/DashCoreTests/GeoPointTests.swift","/workspace/ios/DashCore/Tests/DashCoreTests/K1GPacketTests.swift","/workspace/ios/DashCore/Tests/DashCoreTests/NalRtpTests.swift"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/sources"]
+    description: "Write auxiliary file /workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/sources"
+
+  "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-1232A8DB369E6146.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/home/ubuntu/.local/swift/usr/bin/swiftc"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-1232A8DB369E6146.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-1232A8DB369E6146.txt"
+
+  "<DashCore-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashConstants.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/GeoPoint.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/K1GPacket.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/NalUtils.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/RtpPacketizer.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCore.swiftmodule"]
+    outputs: ["<DashCore-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "<DashCorePackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCoreTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/all-discovered-tests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageDiscoveredTests.swiftmodule"]
+    outputs: ["<DashCorePackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "<DashCorePackageTests-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/runner.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageTests.swiftmodule"]
+    outputs: ["<DashCorePackageTests-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "<DashCorePackageTests-x86_64-unknown-linux-gnu-debug.test>":
+    tool: phony
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.xctest"]
+    outputs: ["<DashCorePackageTests-x86_64-unknown-linux-gnu-debug.test>"]
+
+  "<DashCoreTests-x86_64-unknown-linux-gnu-debug.module>":
+    tool: phony
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/GeoPointTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/K1GPacketTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/NalRtpTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCoreTests.swiftmodule"]
+    outputs: ["<DashCoreTests-x86_64-unknown-linux-gnu-debug.module>"]
+
+  "C.DashCore-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/Sources/DashCore/DashConstants.swift","/workspace/ios/DashCore/Sources/DashCore/GeoPoint.swift","/workspace/ios/DashCore/Sources/DashCore/K1GPacket.swift","/workspace/ios/DashCore/Sources/DashCore/NalUtils.swift","/workspace/ios/DashCore/Sources/DashCore/RtpPacketizer.swift","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-1232A8DB369E6146.txt","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/sources"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashConstants.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/GeoPoint.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/K1GPacket.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/NalUtils.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/RtpPacketizer.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCore.swiftmodule"]
+    description: "Compiling Swift Module 'DashCore' (5 sources)"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-module-name","DashCore","-emit-dependencies","-emit-module","-emit-module-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCore.swiftmodule","-output-file-map","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/output-file-map.json","-parse-as-library","-incremental","-c","@/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/sources","-I","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-enable-batch-mode","-index-store-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-j4","-DSWIFT_PACKAGE","-DDEBUG","-module-cache-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-swift-version","5","-g","-Xcc","-fPIC","-Xcc","-g","-package-name","dashcore","-Xcc","-fno-omit-frame-pointer"]
+
+  "C.DashCorePackageDiscoveredTests-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.derived/DashCoreTests.swift","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.derived/all-discovered-tests.swift","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-1232A8DB369E6146.txt","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCoreTests.swiftmodule","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/sources"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCoreTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/all-discovered-tests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageDiscoveredTests.swiftmodule"]
+    description: "Compiling Swift Module 'DashCorePackageDiscoveredTests' (2 sources)"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-module-name","DashCorePackageDiscoveredTests","-emit-dependencies","-emit-module","-emit-module-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageDiscoveredTests.swiftmodule","-output-file-map","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/sources","-I","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-enable-batch-mode","-index-store-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-j4","-DSWIFT_PACKAGE","-DDEBUG","-module-cache-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-g","-Xcc","-fPIC","-Xcc","-g","-package-name","dashcore","-Xcc","-fno-omit-frame-pointer"]
+
+  "C.DashCorePackageTests-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.derived/runner.swift","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-1232A8DB369E6146.txt","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCoreTests.swiftmodule","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageDiscoveredTests.swiftmodule","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/sources"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/runner.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageTests.swiftmodule"]
+    description: "Compiling Swift Module 'DashCorePackageTests' (1 sources)"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-module-name","DashCorePackageTests","-emit-dependencies","-emit-module","-emit-module-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCorePackageTests.swiftmodule","-output-file-map","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/sources","-I","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-enable-batch-mode","-index-store-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-j4","-DSWIFT_PACKAGE","-DDEBUG","-module-cache-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-g","-Xcc","-fPIC","-Xcc","-g","-package-name","dashcore","-Xcc","-fno-omit-frame-pointer"]
+
+  "C.DashCorePackageTests-x86_64-unknown-linux-gnu-debug.test":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashConstants.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashCore.swiftmodule.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/GeoPoint.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/K1GPacket.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/NalUtils.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/RtpPacketizer.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCorePackageDiscoveredTests.swiftmodule.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/DashCoreTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageDiscoveredTests.build/all-discovered-tests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/DashCorePackageTests.swiftmodule.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.build/runner.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/DashCoreTests.swiftmodule.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/GeoPointTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/K1GPacketTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/NalRtpTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.product/Objects.LinkFileList"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.xctest"]
+    description: "Linking ./.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.xctest"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-L","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug","-o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.xctest","-module-name","DashCorePackageTests","-emit-executable","-Xlinker","-rpath=$ORIGIN","@/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCorePackageTests.product/Objects.LinkFileList","-target","x86_64-unknown-linux-gnu","-g"]
+
+  "C.DashCoreTests-x86_64-unknown-linux-gnu-debug.module":
+    tool: shell
+    inputs: ["/workspace/ios/DashCore/Tests/DashCoreTests/GeoPointTests.swift","/workspace/ios/DashCore/Tests/DashCoreTests/K1GPacketTests.swift","/workspace/ios/DashCore/Tests/DashCoreTests/NalRtpTests.swift","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/swift-version-1232A8DB369E6146.txt","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCore.swiftmodule","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/sources"]
+    outputs: ["/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/GeoPointTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/K1GPacketTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/NalRtpTests.swift.o","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCoreTests.swiftmodule"]
+    description: "Compiling Swift Module 'DashCoreTests' (3 sources)"
+    args: ["/home/ubuntu/.local/swift/usr/bin/swiftc","-module-name","DashCoreTests","-emit-dependencies","-emit-module","-emit-module-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules/DashCoreTests.swiftmodule","-output-file-map","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/output-file-map.json","-parse-as-library","-incremental","-c","@/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCoreTests.build/sources","-I","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/Modules","-target","x86_64-unknown-linux-gnu","-enable-batch-mode","-index-store-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/index/store","-Onone","-enable-testing","-j4","-DSWIFT_PACKAGE","-DDEBUG","-module-cache-path","/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/ModuleCache","-parseable-output","-parse-as-library","-swift-version","5","-g","-Xcc","-fPIC","-Xcc","-g","-package-name","dashcore","-Xcc","-fno-omit-frame-pointer"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/workspace/ios/DashCore/Sources/DashCore/","/workspace/ios/DashCore/Tests/DashCoreTests/","/workspace/ios/DashCore/Package.swift","/workspace/ios/DashCore/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

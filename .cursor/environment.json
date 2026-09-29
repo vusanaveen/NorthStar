@@ -1,0 +1,4 @@
+{
+  "name": "northstar-android-ios-core",
+  "install": "bash scripts/cloud-install.sh"
+}

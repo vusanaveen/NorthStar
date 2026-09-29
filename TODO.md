@@ -247,6 +247,9 @@ The first public APK got Reddit traction; updates must reach people, not get los
 
 ## iOS — research done, spike gated (2026-09-06), council-amended
 
+**Dev workspace ready:** `ios/DashCore` (SwiftPM) + `ios/NorthstarApp` + plan [`docs/IOS_PHASED_PLAN.md`](docs/IOS_PHASED_PLAN.md) + skill `.cursor/skills/ios-northstar-dev`. Phase goal = **connect + navigation first**.
+
+
 Full write-up: **[`docs/IOS_PORT_RESEARCH.md`](docs/IOS_PORT_RESEARCH.md)** · Council: **[`docs/LLM_COUNCIL_REVIEW.md`](docs/LLM_COUNCIL_REVIEW.md)**.
 
 **Verdict:** protocol/video math is portable; product feasibility hinges on Apple platform risks (**multicast entitlement**, Local Network, screen-off, interface pinning). **Conditional Phase 0 only** — no SwiftUI until desk gates pass.

@@ -77,9 +77,10 @@ link is isolated:
 
 ## Hard constraints / non-goals
 
-- **Android is the shipping platform.** iOS is research-only until a on-bike
-  feasibility spike passes — see `@docs/IOS_PORT_RESEARCH.md`. Do not build a
-  full iOS UI in this tree until that gate is green.
+- **Android is the shipping platform.** iOS is phased: **connect + navigation
+  first** — see `@docs/IOS_PHASED_PLAN.md` and `ios/`. Cloud agents develop
+  `ios/DashCore` (SwiftPM tests on Linux); Xcode/device/bike validation needs a Mac.
+  Do not expand into Garage/score UI until Phase 1–2 gates are green.
 - **One bike** (Himalayan 450), **one dash target** (Tripper). No generic
   multi-bike / multi-dash abstraction.
 - No personas, no branding-as-product, no team/lab infrastructure. Keep it lean.

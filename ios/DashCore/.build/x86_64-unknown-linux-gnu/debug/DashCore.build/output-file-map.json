@@ -1,0 +1,35 @@
+{
+  "": {
+    "swift-dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/master.swiftdeps"
+  },
+  "/workspace/ios/DashCore/Sources/DashCore/DashConstants.swift": {
+    "dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashConstants.d",
+    "object": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashConstants.swift.o",
+    "swiftmodule": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashConstants~partial.swiftmodule",
+    "swift-dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/DashConstants.swiftdeps"
+  },
+  "/workspace/ios/DashCore/Sources/DashCore/GeoPoint.swift": {
+    "dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/GeoPoint.d",
+    "object": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/GeoPoint.swift.o",
+    "swiftmodule": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/GeoPoint~partial.swiftmodule",
+    "swift-dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/GeoPoint.swiftdeps"
+  },
+  "/workspace/ios/DashCore/Sources/DashCore/K1GPacket.swift": {
+    "dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/K1GPacket.d",
+    "object": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/K1GPacket.swift.o",
+    "swiftmodule": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/K1GPacket~partial.swiftmodule",
+    "swift-dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/K1GPacket.swiftdeps"
+  },
+  "/workspace/ios/DashCore/Sources/DashCore/NalUtils.swift": {
+    "dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/NalUtils.d",
+    "object": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/NalUtils.swift.o",
+    "swiftmodule": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/NalUtils~partial.swiftmodule",
+    "swift-dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/NalUtils.swiftdeps"
+  },
+  "/workspace/ios/DashCore/Sources/DashCore/RtpPacketizer.swift": {
+    "dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/RtpPacketizer.d",
+    "object": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/RtpPacketizer.swift.o",
+    "swiftmodule": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/RtpPacketizer~partial.swiftmodule",
+    "swift-dependencies": "/workspace/ios/DashCore/.build/x86_64-unknown-linux-gnu/debug/DashCore.build/RtpPacketizer.swiftdeps"
+  }
+}

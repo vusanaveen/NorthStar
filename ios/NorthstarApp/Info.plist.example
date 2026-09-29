@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Copy keys into the Xcode target Info tab / generated Info.plist -->
+<plist version="1.0">
+<dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Northstar talks to your Tripper dash over the bike Wi‑Fi to show navigation.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Northstar uses your location to navigate and show your position on the dash.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Northstar needs background location so navigation can continue with the screen off while you ride.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+	<key>NSBonjourServices</key>
+	<array>
+		<!-- Required companion for Local Network on some iOS versions when using UDP -->
+		<string>_northstar._udp</string>
+	</array>
+</dict>
+</plist>
