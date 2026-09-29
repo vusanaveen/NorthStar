@@ -306,6 +306,13 @@ Session output: **[`docs/brainstorms/2026-09-06-northstar-ios-rider-score-six-ha
 
 **Blue close (aligned with council):** Android instrumented ride first; iOS = entitlement + desk spike only; rider feature = post-ride smoothness coaching (not “safety”); gear deferred; no badges until thresholds exist.
 
+## Future features backlog (ideas, not current work)
+
+Living doc for deferred product ideas from chat/research:
+**[`docs/FUTURE_FEATURES.md`](docs/FUTURE_FEATURES.md)**
+
+Includes: **delayed / auto-start guidance** (“I know until km 8.3, then guide me to 2B”), rider coaching score, iOS gate, community riding, etc. Promote an item into this TODO only when it’s time to build.
+
 ## Community features (END GOAL — long horizon, after the app is solid)
 
 The eventual vision once the core is stable: **community / social riding.** Not now — this is
